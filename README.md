@@ -1,36 +1,57 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ណែមបាត់ដំបង · Nem Battambang
 
-## Getting Started
+Retail & wholesale storefront plus back office (orders, stock, delivery, payments, expenses, P&L)
+for a Cambodian nem business. Next.js 16 · TypeScript · Tailwind 4 · shadcn/ui · Prisma 7 · PostgreSQL · Auth.js.
 
-First, run the development server:
+Design and roadmap: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+
+## Local development
+
+Needs Node 24+ and Docker.
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+cp .env.example .env          # then fill POSTGRES_PASSWORD, DATABASE_URL, AUTH_SECRET, SEED_ADMIN_PASSWORD
+npm install
+docker compose -f docker-compose.dev.yml --env-file .env up -d --wait   # Postgres on 127.0.0.1:5433
+npx prisma migrate dev        # applies migrations + generates the client
+npx prisma db seed            # DEMO data + admin user from SEED_ADMIN_*
+npm run dev                   # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Generate `AUTH_SECRET` with `npx auth secret`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Command | What it does |
+|---|---|
+| `npm run dev` | dev server |
+| `npm test` | unit tests (Vitest) |
+| `npm run typecheck` | `tsc --noEmit` |
+| `npm run lint` | ESLint |
+| `npm run build` | production build (standalone output) |
+| `npm run db:migrate` | create/apply a dev migration |
+| `npm run db:seed` | re-run the idempotent demo seed |
+| `npm run db:studio` | Prisma Studio |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+**Seed data is demo data.** Every seeded customer, batch and price is fictional or a sample from
+the spec, marked "(demo)" where it is visible.
 
-## Learn More
+## Production (Ubuntu VPS)
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+git clone <repo> /opt/nem && cd /opt/nem
+cp .env.example .env && nano .env          # strong secrets; DATABASE_URL is overridden in compose
+docker compose up -d --build               # db → migrate (prisma migrate deploy) → app → nginx
+docker compose run --rm migrate npx prisma db seed   # first install only
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Only Nginx publishes ports (80/443). Postgres and the app sit on the internal network.
+- Health: `GET /api/health` (checks the DB); the app container has a Docker healthcheck.
+- TLS: add certbot certificates and a 443 server block to `docker/nginx/nginx.conf`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Backup & restore
 
-## Deploy on Vercel
+```bash
+docker compose exec db sh -c 'pg_dump -U "$POSTGRES_USER" -Fc "$POSTGRES_DB" > /backups/nem-$(date +%F).dump'
+docker compose exec db sh -c 'pg_restore -U "$POSTGRES_USER" -d "$POSTGRES_DB" --clean --if-exists /backups/<file>.dump'
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+`./backups` on the host is mounted at `/backups` in the db container. Copy it off the server regularly.
