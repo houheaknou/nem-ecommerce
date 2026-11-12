@@ -4,6 +4,7 @@ import { useTransition } from "react";
 import { useTheme } from "next-themes";
 import { Languages, Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useHydrated } from "@/hooks/use-hydrated";
 import { setLocale } from "@/i18n/actions";
 import type { Locale } from "@/i18n/dictionaries";
 
@@ -27,13 +28,16 @@ export function LocaleSwitcher({ locale }: { locale: Locale }) {
 
 export function ThemeToggle() {
   const { resolvedTheme, setTheme } = useTheme();
+  // The theme is only known in the browser (localStorage), so the server and
+  // the first client render must agree on a neutral label; icons switch via CSS.
+  const hydrated = useHydrated();
   const dark = resolvedTheme === "dark";
   return (
     <Button
       variant="ghost"
       size="icon"
       className="rounded-full"
-      aria-label={dark ? "Light mode" : "Dark mode"}
+      aria-label={!hydrated ? "Toggle theme" : dark ? "Light mode" : "Dark mode"}
       onClick={() => setTheme(dark ? "light" : "dark")}
     >
       <Sun className="size-4 dark:hidden" />
