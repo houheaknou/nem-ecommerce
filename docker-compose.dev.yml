@@ -1,8 +1,10 @@
 # Local development: infrastructure only. Run the app with `npm run dev`.
+name: nem-ecommerce
+
 services:
   db:
     image: postgres:17-alpine
-    container_name: nem-db-dev
+    container_name: nem-ecommerce-db-dev
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}

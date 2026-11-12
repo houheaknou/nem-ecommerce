@@ -5,16 +5,17 @@ import { LocaleSwitcher, ThemeToggle } from "@/components/common/preferences";
 import { currentUser } from "@/features/auth/guard";
 import { hasPermission, isStaff } from "@/features/auth/permissions";
 import { getI18n } from "@/i18n/server";
+import { brandNames, getBranding } from "@/features/settings/branding";
 
 export default async function AdminLayout({ children }: LayoutProps<"/admin">) {
   const user = await currentUser();
   if (!user) redirect("/login?callbackUrl=/admin");
   if (!isStaff(user.roleCodes)) redirect("/");
-  const { t, locale } = await getI18n();
+  const [{ t, locale }, b] = await Promise.all([getI18n(), getBranding()]);
 
   // Menu visibility is computed server-side from DB roles.
   const allowed = ADMIN_NAV.filter((n) => !n.perm || hasPermission(user.roleCodes, n.perm)).map((n) => n.key);
-  const navProps = { allowed, labels: t.admin.menu, brand: { title: t.brand, sub: t.brandSub }, logoutLabel: t.nav.logout };
+  const navProps = { allowed, labels: t.admin.menu, brand: { ...brandNames(b, locale), logoUrl: b.logoUrl }, logoutLabel: t.nav.logout };
 
   return (
     <div className="flex min-h-dvh bg-background">

@@ -1,4 +1,4 @@
-# Nem Battambang — Architecture & Design
+# nem-ecommerce — Architecture & Design
 
 Retail + wholesale e-commerce and back-office for a Cambodian nem business.
 This document is the Step 1 design. The [Implementation checklist](#9-implementation-checklist)

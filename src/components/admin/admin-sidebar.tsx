@@ -7,7 +7,7 @@ import { useStoredFlag } from "@/hooks/use-hydrated";
 import { ChevronsLeft, LogOut, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { Logo } from "@/components/brand/nem-illustration";
+import { Logo, type BrandProps } from "@/components/brand/nem-illustration";
 import { ADMIN_NAV } from "./admin-nav";
 import { logoutAction } from "@/features/auth/actions";
 import { cn } from "@/lib/utils";
@@ -15,7 +15,7 @@ import { cn } from "@/lib/utils";
 interface Props {
   allowed: string[]; // nav keys the user may see (computed on the server)
   labels: Record<string, string>;
-  brand: { title: string; sub: string };
+  brand: BrandProps;
   logoutLabel: string;
 }
 
@@ -54,7 +54,7 @@ export function AdminSidebar(props: Props) {
   return (
     <aside className={cn("sticky top-0 hidden h-dvh shrink-0 flex-col border-r border-sidebar-border bg-sidebar p-3 transition-[width] lg:flex", collapsed ? "w-[72px]" : "w-64")}>
       <div className={cn("mb-4 flex items-center", collapsed ? "justify-center" : "justify-between")}>
-        {!collapsed && <Logo title={props.brand.title} sub={props.brand.sub} />}
+        {!collapsed && <Logo {...props.brand} />}
         <Button variant="ghost" size="icon" className="rounded-full" onClick={toggle} aria-label="Toggle sidebar">
           <ChevronsLeft className={cn("size-4 transition", collapsed && "rotate-180")} />
         </Button>
@@ -83,7 +83,7 @@ export function AdminMobileNav(props: Props) {
       </SheetTrigger>
       <SheetContent side="left" className="w-72 bg-sidebar p-3">
         <SheetTitle className="sr-only">Menu</SheetTitle>
-        <div className="mb-4 mt-2"><Logo title={props.brand.title} sub={props.brand.sub} /></div>
+        <div className="mb-4 mt-2"><Logo {...props.brand} /></div>
         <NavList {...props} collapsed={false} onNavigate={() => setOpen(false)} />
       </SheetContent>
     </Sheet>

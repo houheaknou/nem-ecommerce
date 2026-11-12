@@ -3,8 +3,6 @@ export type Locale = (typeof LOCALES)[number];
 export const DEFAULT_LOCALE: Locale = "km";
 
 const km = {
-  brand: "ណែមបាត់ដំបង",
-  brandSub: "Nem Battambang",
   nav: {
     home: "ទំព័រដើម",
     products: "ផលិតផល",
@@ -19,7 +17,7 @@ const km = {
   },
   home: {
     heroBadge: "ធ្វើដោយដៃ • ស្រស់ថ្មីរាល់ថ្ងៃ",
-    heroTitle: "ណែមបាត់ដំបង ឆ្ងាញ់ពិតៗ",
+    heroTitle: "{brand} ឆ្ងាញ់ពិតៗ",
     heroText: "រសជាតិជូរល្មម ឈ្ងុយក្លិនខ្ទឹម និងម្ទេស តាមរូបមន្តប្រពៃណីខេត្តបាត់ដំបង។ ដឹកជូនដល់ផ្ទះទូទាំងប្រទេស។",
     shopNow: "ទិញឥឡូវនេះ",
     becomeWholesale: "ចុះឈ្មោះលក់ដុំ",
@@ -103,8 +101,6 @@ const km = {
 export type Dictionary = typeof km;
 
 const en: Dictionary = {
-  brand: "Nem Battambang",
-  brandSub: "ណែមបាត់ដំបង",
   nav: {
     home: "Home",
     products: "Products",
@@ -119,7 +115,7 @@ const en: Dictionary = {
   },
   home: {
     heroBadge: "Handmade • Fresh every day",
-    heroTitle: "Authentic Nem Battambang",
+    heroTitle: "Authentic {brand}",
     heroText: "Perfectly tangy, fragrant with garlic and chilli — the traditional Battambang recipe, delivered nationwide.",
     shopNow: "Shop now",
     becomeWholesale: "Become a reseller",

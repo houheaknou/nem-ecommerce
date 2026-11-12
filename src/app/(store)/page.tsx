@@ -5,9 +5,11 @@ import { NemIllustration } from "@/components/brand/nem-illustration";
 import { ProductCard } from "@/components/store/product-card";
 import { listStorefrontProducts } from "@/features/catalog/queries";
 import { getI18n } from "@/i18n/server";
+import { getBranding, withBrand } from "@/features/settings/branding";
 
 export default async function HomePage() {
-  const [{ t, locale }, products] = await Promise.all([getI18n(), listStorefrontProducts()]);
+  const [{ t, locale }, products, brand] = await Promise.all([getI18n(), listStorefrontProducts(), getBranding()]);
+  const tagline = locale === "km" ? brand.taglineKm : brand.taglineEn;
   const featured = products.slice(0, 4);
   const stepIcons = [ShoppingBasket, MapPin, Wallet, PackageCheck];
 
@@ -21,9 +23,9 @@ export default async function HomePage() {
               <Leaf className="size-3.5" /> {t.home.heroBadge}
             </span>
             <h1 className="font-heading text-4xl font-black leading-tight text-foreground md:text-5xl">
-              {t.home.heroTitle}
+              {withBrand(t.home.heroTitle, brand, locale)}
             </h1>
-            <p className="max-w-md text-base text-muted-foreground">{t.home.heroText}</p>
+            <p className="max-w-md text-base text-muted-foreground">{tagline || t.home.heroText}</p>
             <div className="flex flex-wrap gap-3">
               <Button asChild size="lg" className="rounded-full px-6 font-bold shadow-soft">
                 <Link href="/products">

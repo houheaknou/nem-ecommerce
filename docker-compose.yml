@@ -1,4 +1,6 @@
 # Production: nginx -> app -> postgres. Postgres and the app are NOT published.
+name: nem-ecommerce
+
 services:
   db:
     image: postgres:17-alpine

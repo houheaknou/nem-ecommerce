@@ -1,11 +1,11 @@
 import Link from "next/link";
 import { ShoppingBag, User } from "lucide-react";
-import { Logo } from "@/components/brand/nem-illustration";
+import { Logo, type BrandProps } from "@/components/brand/nem-illustration";
 import { LocaleSwitcher, ThemeToggle } from "@/components/common/preferences";
 import { CartCount } from "./cart-badge";
 import type { Dictionary, Locale } from "@/i18n/dictionaries";
 
-export function StoreHeader({ t, locale, isStaff, signedIn }: { t: Dictionary; locale: Locale; isStaff: boolean; signedIn: boolean }) {
+export function StoreHeader({ t, locale, brand, isStaff, signedIn }: { t: Dictionary; locale: Locale; brand: BrandProps; isStaff: boolean; signedIn: boolean }) {
   const links = [
     { href: "/", label: t.nav.home },
     { href: "/products", label: t.nav.products },
@@ -17,7 +17,7 @@ export function StoreHeader({ t, locale, isStaff, signedIn }: { t: Dictionary; l
     <header className="sticky top-0 z-40 border-b border-border/70 bg-background/85 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-6xl items-center gap-4 px-4">
         <Link href="/" aria-label={t.nav.home}>
-          <Logo title={t.brand} sub={t.brandSub} />
+          <Logo {...brand} />
         </Link>
         <nav className="ml-6 hidden items-center gap-1 md:flex">
           {links.map((l) => (

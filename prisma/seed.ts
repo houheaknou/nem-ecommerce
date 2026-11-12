@@ -254,7 +254,13 @@ async function seedFinance() {
 
 async function seedSettings() {
   const settings: Record<string, unknown> = {
+    // Store identity is data, not code — edit these to rename the shop.
     "business.name": { km: "ណែមបាត់ដំបង", en: "Nem Battambang" },
+    "business.tagline": {
+      km: "ណែមធ្វើដោយដៃ តាមរូបមន្តប្រពៃណីខេត្តបាត់ដំបង។ ដឹកជូនដល់ផ្ទះទូទាំងប្រទេស។",
+      en: "Handmade nem from a traditional Battambang recipe, delivered nationwide.",
+    },
+    "business.logoUrl": null,
     "business.phone": "012 345 678",
     "business.address": { km: "ក្រុងបាត់ដំបង ខេត្តបាត់ដំបង", en: "Battambang City, Battambang" },
     "business.facebook": "https://facebook.com/",

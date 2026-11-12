@@ -5,10 +5,10 @@ import { cn } from "@/lib/utils";
  * garlic — used where a real product photo has not been uploaded yet.
  * Replace with real photography via product_images.
  */
-export function NemIllustration({ className, variant = 0 }: { className?: string; variant?: number }) {
+export function NemIllustration({ className, variant = 0, label = "Nem" }: { className?: string; variant?: number; label?: string }) {
   const leaf = ["#7fbf7a", "#8cc97f", "#74b56f", "#93cf88"][variant % 4];
   return (
-    <svg viewBox="0 0 200 160" className={cn("h-full w-full", className)} role="img" aria-label="Nem Battambang">
+    <svg viewBox="0 0 200 160" className={cn("h-full w-full", className)} role="img" aria-label={label}>
       <ellipse cx="100" cy="138" rx="74" ry="10" fill="currentColor" opacity="0.08" />
       {/* banana leaf */}
       <path d="M22 108 C 40 60, 150 40, 182 72 C 168 118, 70 138, 22 108 Z" fill={leaf} />
@@ -46,11 +46,22 @@ export function NemIllustration({ className, variant = 0 }: { className?: string
   );
 }
 
-export function Logo({ className, title, sub }: { className?: string; title: string; sub: string }) {
+export interface BrandProps {
+  title: string;
+  sub: string;
+  logoUrl?: string | null;
+}
+
+export function Logo({ className, title, sub, logoUrl }: BrandProps & { className?: string }) {
   return (
     <span className={cn("flex items-center gap-2", className)}>
       <span className="grid size-10 place-items-center rounded-2xl bg-accent shadow-soft">
-        <NemIllustration className="size-9" />
+        {logoUrl ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={logoUrl} alt="" className="size-9 rounded-xl object-cover" />
+        ) : (
+          <NemIllustration className="size-9" label={title} />
+        )}
       </span>
       <span className="leading-tight">
         <span className="block font-heading text-base font-extrabold text-primary">{title}</span>

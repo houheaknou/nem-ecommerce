@@ -1,4 +1,4 @@
-// Nem Battambang — commerce + business management schema.
+// nem-ecommerce — commerce + business management schema.
 // Money: Decimal(14,2). Quantities of packs: Int. Weights: Int grams.
 // Reporting currency is KHR; every money row stores its currency code.
 

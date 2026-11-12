@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { Phone, Send } from "lucide-react";
+import { Logo, type BrandProps } from "@/components/brand/nem-illustration";
+import type { Dictionary } from "@/i18n/dictionaries";
 
 // Lucide 1.x dropped brand icons; minimal Facebook "f" mark.
 function FacebookIcon({ className }: { className?: string }) {
@@ -9,16 +11,23 @@ function FacebookIcon({ className }: { className?: string }) {
     </svg>
   );
 }
-import { Logo } from "@/components/brand/nem-illustration";
-import type { Dictionary } from "@/i18n/dictionaries";
 
-export function StoreFooter({ t, phone, facebook, telegram }: { t: Dictionary; phone: string; facebook: string; telegram: string }) {
+interface Props {
+  t: Dictionary;
+  brand: BrandProps;
+  tagline: string;
+  phone: string;
+  facebook: string;
+  telegram: string;
+}
+
+export function StoreFooter({ t, brand, tagline, phone, facebook, telegram }: Props) {
   return (
     <footer className="mt-16 border-t border-border bg-secondary/60 pb-24 md:pb-0">
       <div className="mx-auto grid max-w-6xl gap-8 px-4 py-10 sm:grid-cols-3">
         <div className="space-y-3">
-          <Logo title={t.brand} sub={t.brandSub} />
-          <p className="text-sm text-muted-foreground">{t.home.heroText}</p>
+          <Logo {...brand} />
+          <p className="text-sm text-muted-foreground">{tagline || t.home.heroText}</p>
         </div>
         <nav className="grid gap-2 text-sm">
           <Link href="/products" className="hover:text-primary">{t.nav.products}</Link>
@@ -28,12 +37,29 @@ export function StoreFooter({ t, phone, facebook, telegram }: { t: Dictionary; p
         </nav>
         <div className="grid gap-2 text-sm">
           <span className="font-bold">{t.home.contactUs}</span>
-          <a href={`tel:${phone.replace(/\s/g, "")}`} className="flex items-center gap-2 hover:text-primary"><Phone className="size-4" />{phone}</a>
-          <a href={facebook} target="_blank" rel="noreferrer" className="flex items-center gap-2 hover:text-primary"><FacebookIcon className="size-4" />Facebook</a>
-          <a href={telegram} target="_blank" rel="noreferrer" className="flex items-center gap-2 hover:text-primary"><Send className="size-4" />Telegram</a>
+          {phone && (
+            <a href={`tel:${phone.replace(/\s/g, "")}`} className="flex items-center gap-2 hover:text-primary">
+              <Phone className="size-4" />
+              {phone}
+            </a>
+          )}
+          {facebook && (
+            <a href={facebook} target="_blank" rel="noreferrer" className="flex items-center gap-2 hover:text-primary">
+              <FacebookIcon className="size-4" />
+              Facebook
+            </a>
+          )}
+          {telegram && (
+            <a href={telegram} target="_blank" rel="noreferrer" className="flex items-center gap-2 hover:text-primary">
+              <Send className="size-4" />
+              Telegram
+            </a>
+          )}
         </div>
       </div>
-      <p className="pb-6 text-center text-xs text-muted-foreground">© {new Date().getFullYear()} {t.brand}</p>
+      <p className="pb-6 text-center text-xs text-muted-foreground">
+        © {new Date().getFullYear()} {brand.title}
+      </p>
     </footer>
   );
 }

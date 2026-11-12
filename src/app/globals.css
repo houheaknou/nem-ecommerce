@@ -54,7 +54,7 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-/* ── Nem Battambang design tokens ──────────────────────────────
+/* ── nem-ecommerce design tokens ──────────────────────────────
    Edit these to re-theme the whole app (storefront + admin). */
 :root {
   --brand-coral: #ff7885;

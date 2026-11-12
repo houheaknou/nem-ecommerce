@@ -1,9 +1,25 @@
-# ណែមបាត់ដំបង · Nem Battambang
+# nem-ecommerce
 
 Retail & wholesale storefront plus back office (orders, stock, delivery, payments, expenses, P&L)
 for a Cambodian nem business. Next.js 16 · TypeScript · Tailwind 4 · shadcn/ui · Prisma 7 · PostgreSQL · Auth.js.
 
 Design and roadmap: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+
+## Store name and branding
+
+The shop name is **not hardcoded**. It is read from `system_settings` on every request
+(`src/features/settings/branding.ts`), so the business can be renamed — or the platform reused for
+another shop — without a code change or deploy:
+
+| Setting key | Example |
+|---|---|
+| `business.name` | `{"km": "ណែមបាត់ដំបង", "en": "Nem Battambang"}` |
+| `business.tagline` | `{"km": "…", "en": "Handmade nem…"}` (hero text, footer, meta description) |
+| `business.logoUrl` | image URL, or `null` to use the built-in illustration |
+| `business.phone` / `business.facebook` / `business.telegram` | footer + contact page; empty hides the link |
+
+UI strings may use `{brand}` as a placeholder (see `home.heroTitle` in `src/i18n/dictionaries.ts`).
+The Settings admin page (Phase 6) will edit these; until then use `npm run db:studio`.
 
 ## Local development
 
