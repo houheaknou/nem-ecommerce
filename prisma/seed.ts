@@ -260,7 +260,7 @@ async function seedSettings() {
       km: "ណែមធ្វើដោយដៃ តាមរូបមន្តប្រពៃណីខេត្តបាត់ដំបង។ ដឹកជូនដល់ផ្ទះទូទាំងប្រទេស។",
       en: "Handmade nem from a traditional Battambang recipe, delivered nationwide.",
     },
-    "business.logoUrl": null,
+    "business.logoUrl": "/brand/logo.webp",
     "business.phone": "012 345 678",
     "business.address": { km: "ក្រុងបាត់ដំបង ខេត្តបាត់ដំបង", en: "Battambang City, Battambang" },
     "business.facebook": "https://facebook.com/",

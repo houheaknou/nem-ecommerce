@@ -40,7 +40,12 @@ export default async function HomePage() {
           <div className="relative mx-auto aspect-square w-full max-w-md">
             <div className="absolute inset-6 rounded-[3rem] bg-gradient-to-br from-accent via-secondary to-warning/40 rotate-3" />
             <div className="absolute inset-6 rounded-[3rem] border-2 border-dashed border-primary/30 -rotate-3" />
-            <NemIllustration className="relative p-10 drop-shadow-xl" />
+            {brand.logoUrl ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={brand.logoUrl} alt={locale === "km" ? brand.nameKm : brand.nameEn} className="relative size-full object-contain p-4 drop-shadow-xl" />
+            ) : (
+              <NemIllustration className="relative p-10 drop-shadow-xl" />
+            )}
           </div>
         </div>
       </section>

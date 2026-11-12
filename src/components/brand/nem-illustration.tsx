@@ -55,14 +55,15 @@ export interface BrandProps {
 export function Logo({ className, title, sub, logoUrl }: BrandProps & { className?: string }) {
   return (
     <span className={cn("flex items-center gap-2", className)}>
-      <span className="grid size-10 place-items-center rounded-2xl bg-accent shadow-soft">
-        {logoUrl ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img src={logoUrl} alt="" className="size-9 rounded-xl object-cover" />
-        ) : (
+      {logoUrl ? (
+        // Uploaded badge logos are detailed, so show them larger and unboxed.
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={logoUrl} alt="" width={52} height={52} className="size-[52px] shrink-0 object-contain drop-shadow-sm" />
+      ) : (
+        <span className="grid size-10 place-items-center rounded-2xl bg-accent shadow-soft">
           <NemIllustration className="size-9" label={title} />
-        )}
-      </span>
+        </span>
+      )}
       <span className="leading-tight">
         <span className="block font-heading text-base font-extrabold text-primary">{title}</span>
         <span className="block text-[11px] text-muted-foreground">{sub}</span>
