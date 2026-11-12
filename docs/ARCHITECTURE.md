@@ -45,7 +45,7 @@ Rules that hold everywhere:
 | Auth & RBAC | users, roles, permissions, audit log | `features/auth/permissions.ts` |
 | Catalog | categories, products, variants, images | `features/catalog/queries.ts` |
 | Pricing | retail, wholesale tiers, customer lists, promotions, price history | `features/pricing/domain/pricing.ts` |
-| Customers | customers, addresses, wholesale approvals, groups | — (Phase 2) |
+| Customers | customers, addresses, wholesale approvals, groups | `features/customers/*`, `lib/phone.ts` |
 | Cart & Checkout | cart quote, idempotent checkout | `features/cart/quote.ts` |
 | Orders | orders, items, status history, returns | `features/orders/domain/order-rules.ts` |
 | Inventory | locations, batches, movements, reservations, write-offs | `features/inventory/domain/fefo.ts` |
@@ -238,13 +238,17 @@ Legend: ✅ done and verified · 🟡 partial · ⬜ not started
 - ✅ Storefront shell, homepage, product list, product detail, cart with server-side quote
 - ✅ Admin shell (collapsible sidebar, permission-filtered menu) and dashboard backed by live queries
 - ✅ Domain engines + tests: pricing, wholesale tiers, customer pricing, promotions, delivery (weight/qty/combined/free), FEFO + expiry + overselling, order transitions, payment/refund status, P&L, expense classification, RBAC
-- ⬜ Audit-log writer helper, error boundaries, S3 upload helper
+- ✅ Audit-log writer (`lib/audit.ts`), S3 upload helper with local fallback (`lib/storage.ts`)
+- ⬜ Error boundaries
 
 ### Phase 2 — Products & customers
-- ⬜ Product / variant / category CRUD (TanStack Table, RHF + Zod), price history
-- ⬜ Price list + tier editor, customer price lists, promotions
-- ⬜ Customer CRUD, addresses, duplicate detection (phone), wholesale request + approval
-- ⬜ Registration, customer profile, address book, user management
+- ✅ Category CRUD; product + variant editor with image upload, price history, cost hidden without `cost.view`, price changes need `price.edit`
+- ✅ Wholesale tier editor (live overlap check, enforced server-side), customer-specific price lists with customer assignment, promotions
+- ✅ Customers: server-side search/pagination, create/edit, addresses, duplicate detection on normalised phone, order stats
+- ✅ Wholesale application (storefront) → approval queue (admin) → customer becomes WHOLESALE + role granted
+- ✅ Registration (links to an existing staff-created customer with the same phone), account page: profile, address book, wholesale status
+- ✅ Staff user management with guard rails (only Super Admin grants Super Admin, no self-lockout)
+- ✅ Every mutation is a Zod-validated, permission-checked server action in a transaction with an audit-log row
 
 ### Phase 3 — Sales & orders
 - ⬜ Checkout: address → delivery quote → payment method → `placeOrder` (idempotency key, transaction)

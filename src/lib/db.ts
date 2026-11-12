@@ -15,6 +15,15 @@ if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = db;
 
 export type Tx = Parameters<Parameters<typeof db.$transaction>[0]>[0];
 
+/** Next simple code, e.g. nextCode(tx, "CUSTOMER", "CUS") -> "CUS-00042". */
+export async function nextCode(tx: Tx, key: string, prefix: string, pad = 5): Promise<string> {
+  const rows = await tx.$queryRaw<{ value: number }[]>`
+    INSERT INTO sequences (key, value) VALUES (${key}, 1)
+    ON CONFLICT (key) DO UPDATE SET value = sequences.value + 1
+    RETURNING value`;
+  return `${prefix}-${String(rows[0].value).padStart(pad, "0")}`;
+}
+
 /**
  * Next document number, e.g. nextNumber(tx, "ORDER", "NB") -> "NB-2611-00042".
  * The UPDATE ... RETURNING row-locks the counter, so concurrent checkouts

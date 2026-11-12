@@ -300,6 +300,7 @@ model Customer {
   user              User?           @relation(fields: [userId], references: [id], onDelete: SetNull)
   fullName          String
   phone             String
+  phoneNormalized   String // digits only, local format (0xx...) — duplicate detection
   email             String?
   type              CustomerType    @default(RETAIL)
   wholesaleStatus   WholesaleStatus @default(NONE)
@@ -320,7 +321,7 @@ model Customer {
   wholesaleApprovals WholesaleApproval[]
   priceLists         CustomerPriceList[]
 
-  @@index([phone])
+  @@index([phoneNormalized])
   @@index([type, wholesaleStatus])
   @@map("customers")
 }

@@ -282,13 +282,13 @@ async function seedDemoCustomers() {
   if (await db.customer.count()) return;
   await db.customer.create({
     data: {
-      code: "CUS-00001", fullName: "Chan Sreypov (demo)", phone: "010 000 001", type: "RETAIL", acquisitionSource: "FACEBOOK",
+      code: "CUS-00001", fullName: "Chan Sreypov (demo)", phone: "010 000 001", phoneNormalized: "010000001", type: "RETAIL", acquisitionSource: "FACEBOOK",
       addresses: { create: { recipientName: "Chan Sreypov", phone: "010 000 001", provinceId: pp.id, street: "St. 271 (demo)", isDefault: true } },
     },
   });
   await db.customer.create({
     data: {
-      code: "CUS-00002", fullName: "Lim Vannak (demo)", phone: "010 000 002", type: "WHOLESALE", wholesaleStatus: "APPROVED",
+      code: "CUS-00002", fullName: "Lim Vannak (demo)", phone: "010 000 002", phoneNormalized: "010000002", type: "WHOLESALE", wholesaleStatus: "APPROVED",
       businessName: "Vannak Mini Mart (demo)", contactPerson: "Lim Vannak", creditLimit: 500000, acquisitionSource: "TELEGRAM",
       addresses: { create: { recipientName: "Vannak Mini Mart", phone: "010 000 002", provinceId: btb.id, isDefault: true } },
     },

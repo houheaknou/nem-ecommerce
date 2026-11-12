@@ -1,4 +1,5 @@
 import "server-only";
+import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
 import { hasPermission, isStaff, type Permission } from "./permissions";
@@ -50,6 +51,14 @@ export async function requirePermission(perm: Permission) {
     throw new AuthError("FORBIDDEN", `Missing permission ${perm}`);
   }
   return user;
+}
+
+/** For pages: redirect instead of throwing. Returns the user and a `can()` helper. */
+export async function pageGuard(perm?: Permission) {
+  const user = await currentUser();
+  if (!user) redirect("/login?callbackUrl=/admin");
+  if (!isStaff(user.roleCodes) || (perm && !hasPermission(user.roleCodes, perm))) redirect("/admin");
+  return { user, can: (p: Permission) => hasPermission(user.roleCodes, p) };
 }
 
 export async function can(perm: Permission): Promise<boolean> {

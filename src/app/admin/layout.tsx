@@ -5,6 +5,7 @@ import { LocaleSwitcher, ThemeToggle } from "@/components/common/preferences";
 import { currentUser } from "@/features/auth/guard";
 import { hasPermission, isStaff } from "@/features/auth/permissions";
 import { getI18n } from "@/i18n/server";
+import { AdminTextProvider } from "@/i18n/admin-text-context";
 import { brandNames, getBranding } from "@/features/settings/branding";
 
 export default async function AdminLayout({ children }: LayoutProps<"/admin">) {
@@ -30,7 +31,9 @@ export default async function AdminLayout({ children }: LayoutProps<"/admin">) {
             <ThemeToggle />
           </div>
         </header>
-        <main className="flex-1 p-4 md:p-6">{children}</main>
+        <main className="flex-1 p-4 md:p-6">
+          <AdminTextProvider locale={locale}>{children}</AdminTextProvider>
+        </main>
       </div>
     </div>
   );

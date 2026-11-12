@@ -1,6 +1,7 @@
 import "server-only";
 import { cookies } from "next/headers";
 import { DEFAULT_LOCALE, dictionaries, LOCALES, type Locale } from "./dictionaries";
+import { adminTexts } from "./admin-text";
 
 export async function getLocale(): Promise<Locale> {
   const value = (await cookies()).get("locale")?.value;
@@ -9,7 +10,7 @@ export async function getLocale(): Promise<Locale> {
 
 export async function getI18n() {
   const locale = await getLocale();
-  return { locale, t: dictionaries[locale] };
+  return { locale, t: dictionaries[locale], a: adminTexts[locale] };
 }
 
 /** Pick the Khmer or English field of a bilingual record. */
